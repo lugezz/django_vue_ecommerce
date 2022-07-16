@@ -25,7 +25,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
     slug = models.SlugField()
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to="uploads", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="uploads", blank=True, null=True)
@@ -39,16 +39,18 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product", kwargs={"slug": self.slug})
+        return reverse("product-detail", kwargs={"slug": self.slug})
 
     def get_image(self):
         if self.image:
-            return 'http://localhost' + self.image.url
+            # TODO: Make it more dinamic
+            return 'http://localhost:8000' + self.image.url
         return ''
 
     def get_thumbnail(self):
+        # TODO: Change it, it's making unpload/upload
         if self.thumbnail:
-            return 'http://localhost' + self.thumbnail.url
+            return 'http://localhost:8000' + self.thumbnail.url
         if self.image:
             self.thumbnail = self.make_thumbnail(self.image)
             self.save()
