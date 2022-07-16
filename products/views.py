@@ -15,6 +15,12 @@ class ProductDetailView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 
+class CategoryDetailView(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    lookup_field = 'slug'
+
+
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer

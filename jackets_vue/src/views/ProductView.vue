@@ -52,7 +52,7 @@ export default {
         .get(`/api/v1/products/${productSlug}`)
         .then(response => {
           this.product = response.data
-          document.title = this.product.name + ' | Djackets'
+          document.title = this.product.name + ' | My Jackets'
         })
         .catch(error => {
           console.log(error)

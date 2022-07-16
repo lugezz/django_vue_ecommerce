@@ -2,12 +2,6 @@ from rest_framework import serializers
 from products.models import Category, Product
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = "__all__"
-
-
 class ProductSerializer(serializers.ModelSerializer):
     categorized_in = serializers.SerializerMethodField(read_only=True)
 
@@ -26,3 +20,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_categorized_in(self, obj):
         return obj.category.name
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = (
+            "id",
+            "name",
+            "get_absolute_url",
+            "products"
+        )
