@@ -39,7 +39,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product-detail", kwargs={"slug": self.slug})
+        return f'{self.slug}/'
 
     def get_image(self):
         if self.image:
