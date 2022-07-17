@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
 
-    # Local apps
+    # Own apps
     'products',
+    'order',
 ]
 
 CORS_ALLOWED_ORIGINS = [

@@ -109,7 +109,7 @@
                 <template v-if="cartTotalLength">
                     <hr>
 
-                    <button class="button is-dark" @click="submitForm">Pay with Stripe</button>
+                    <button class="button is-dark" @click="submitForm">Pay</button>
                 </template>
             </div>
         </div>
@@ -126,7 +126,6 @@ export default {
       cart: {
         items: []
       },
-      stripe: {},
       card: {},
       first_name: '',
       last_name: '',
@@ -180,21 +179,11 @@ export default {
 
       if (!this.errors.length) {
         this.$store.commit('setIsLoading', true)
-
-        this.stripe.createToken(this.card).then(result => {
-          if (result.error) {
-            this.$store.commit('setIsLoading', false)
-
-            this.errors.push('Something went wrong with Stripe. Please try again')
-
-            console.log(result.error.message)
-          } else {
-            this.stripeTokenHandler(result.token)
-          }
-        })
+        this.saveOrder()
+        this.$store.commit('setIsLoading', false)
       }
     },
-    async stripeTokenHandler (token) {
+    async saveOrder () {
       const items = []
 
       for (let i = 0; i < this.cart.items.length; i++) {
@@ -216,12 +205,12 @@ export default {
         zipcode: this.zipcode,
         place: this.place,
         phone: this.phone,
-        items: items,
-        stripe_token: token.id
+        items: items
       }
 
+      // console.log(data.item)
       await axios
-        .post('/api/v1/checkout/', data)
+        .post('/api/v1/order/checkout/', data)
         .then(response => {
           this.$store.commit('clearCart')
           this.$router.push('/cart/success')
@@ -231,8 +220,6 @@ export default {
 
           console.log(error)
         })
-
-      this.$store.commit('setIsLoading', false)
     }
   },
   computed: {
