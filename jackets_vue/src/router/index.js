@@ -72,12 +72,18 @@ const routes = [
   {
     path: '/:product_slug',
     name: 'ProductView',
-    component: ProductView
+    component: ProductView,
+    meta: {
+      requireLogin: true
+    }
   },
   {
     path: '/category/:category_slug',
     name: 'CategoryView',
-    component: CategoryView
+    component: CategoryView,
+    meta: {
+      requireLogin: true
+    }
   }
 ]
 
